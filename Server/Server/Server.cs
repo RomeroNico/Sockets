@@ -55,8 +55,13 @@ namespace Server
                 {
                     buffer = new byte[1024];
                     s_Client.Receive(buffer);
-                    message = byteToString(buffer);
-                    Console.WriteLine($">>> {message}");
+                    //message = byteToString(buffer);
+                    if (buffer[0] != 0)
+                    {
+                        for (int i = 0; i < 40; i++)
+                            Console.WriteLine(" Number " + i + " Byte: " + buffer[i] + " - (0x" + buffer[i].ToString("X") + ") - " + (char)buffer[i]);
+                    }
+                    //Console.WriteLine($">>> {message}");
                 }
 
             }

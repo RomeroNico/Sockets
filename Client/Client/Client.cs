@@ -34,6 +34,11 @@ namespace Client
             s_Client.Send(data);
         }
 
+        public void Send(byte[] msg)
+        {
+            s_Client.Send(msg);
+        }
+
         public string byteToString(byte[] buffer)
         {
             string message;
