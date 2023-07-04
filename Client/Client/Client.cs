@@ -39,7 +39,12 @@ namespace Client
 
         public void Send(byte[] msg)
         {
-            s_Client.Send(msg);
+            int bytesSent = s_Client.Send(msg);
+            Console.WriteLine("sent {0} bytes", bytesSent);
+            for (int i = 0; i < bytesSent; i++)
+            {
+                Console.WriteLine("{0} - {1} - {2}", i, msg[i], (char)msg[i]);
+            }
         }
 
         public string byteToString(byte[] buffer)
