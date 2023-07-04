@@ -63,6 +63,18 @@ namespace Client
 
             //TODO Completar telegram[a++]
 
+            //Identifier
+            telegram[a++] = (byte)0x3C;
+
+            //Length
+            telegram[a++] = (byte)0x00;
+            telegram[a++] = (byte)0x00;
+
+            //Checksum
+            telegram[a++] = (byte)0x3C;
+
+
+
             byte[] finalTelegram = new byte[a];
             for (int i = 0; i < a; i++)
             {
@@ -76,6 +88,9 @@ namespace Client
             int a = 0;
 
             //TODO Completar telegram[a++]
+
+            //ENQ
+            telegram[a++] = (byte)0x05;
 
             byte[] finalTelegram = new byte[a];
             for (int i = 0; i < a; i++)
