@@ -352,6 +352,9 @@ namespace Client
             //Text.AutodatingDelimiter
             telegram[a++] = (byte)0x1A;
 
+            //Text.Delimiter
+            telegram[a++] = (byte)0x10;
+
             //Text.Expresion1
             telegram[a++] = (byte)0x01;
 
