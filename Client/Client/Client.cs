@@ -60,5 +60,23 @@ namespace Client
             }
             return message;
         }
+
+        public string WaitForAnswer(int to) {
+            Byte[] buf = new byte[5000];
+            string res = "";
+            int bytesReceived = 0;
+
+            s_Client.ReceiveTimeout = to;
+            try
+            {
+                bytesReceived = s_Client.Receive(buf);
+                res = Encoding.ASCII.GetString(buf);
+            }
+            catch (TimeoutException ex)
+            {
+                res = "it never answered";
+            }
+            return res;
+        }
     }
 }

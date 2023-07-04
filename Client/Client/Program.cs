@@ -28,11 +28,15 @@ namespace Client
             byte[] telegram;
 
             c.Start();
-            Console.Write(">>> ");
+            Console.Write("Send telegram ");
             msg = args[2];
             printMessage = Encoding.ASCII.GetBytes(msg);
             telegram = BuildTelegram(ImajeS8Command.SendCompleteMessage, printMessage);
             c.Send(telegram);
+            Console.Write("Send telegram finish ");
+            Console.Write("Wait for an answer");
+            c.WaitForAnswer(7000); // wait 7 seconds
+            Console.Write("Wait for an answer finished");
             c.Close();
         }
 
