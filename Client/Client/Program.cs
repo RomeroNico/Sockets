@@ -461,13 +461,12 @@ namespace Client
 
 
             byte[] finalTelegram = new byte[a];
-
-            for (int i = 0; i < printMessage.Length; i++)
-                telegram[a++] = printMessage[i];
-
-            //Console.WriteLine("byte {0}", a);
-
-            return telegram;
+            for (int i = 0; i < a; i++)
+            {
+                finalTelegram[i] = telegram[i];
+            }
+            //Console.WriteLine("bytes {0}", a);
+            return finalTelegram;
         }
 
         // TODO
