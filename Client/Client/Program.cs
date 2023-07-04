@@ -22,20 +22,18 @@ namespace Client
         }
         static void Main(string[] args)
         {
-            Client c = new Client("localhost", 6400);
+            Client c = new Client(args[0], Int32.Parse(args[1]));
             string msg;
             byte[] printMessage;
             byte[] telegram;
 
             c.Start();
-            while (true)
-            {
-                Console.Write(">>> ");
-                msg = Console.ReadLine();
-                printMessage = Encoding.ASCII.GetBytes(msg);
-                telegram = BuildTelegram(ImajeS8Command.SendCompleteMessage, printMessage);
-                c.Send(telegram);
-            }
+            Console.Write(">>> ");
+            msg = args[2];
+            printMessage = Encoding.ASCII.GetBytes(msg);
+            telegram = BuildTelegram(ImajeS8Command.SendCompleteMessage, printMessage);
+            c.Send(telegram);
+            c.Close();
         }
 
         static byte[] BuildTelegram(ImajeS8Command command, byte[] printMessage)
@@ -462,7 +460,7 @@ namespace Client
 
 
 
-            byte[] finalTelegram = new byte[a]
+            byte[] finalTelegram = new byte[a];
 
             for (int i = 0; i < printMessage.Length; i++)
                 telegram[a++] = printMessage[i];

@@ -8,7 +8,6 @@ namespace Client
 {
     class Client
     {
-        IPHostEntry host;
         IPAddress ipAddr;
         IPEndPoint endPoint;
 
@@ -16,8 +15,7 @@ namespace Client
 
         public Client(string ip, int port)
         {
-            host = Dns.GetHostEntry(ip);
-            ipAddr = host.AddressList[0];
+            ipAddr = IPAddress.Parse(ip);
             endPoint = new IPEndPoint(ipAddr, port);
 
             s_Client = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -26,6 +24,11 @@ namespace Client
         public void Start()
         {
             s_Client.Connect(endPoint);
+        }
+
+        public void Close()
+        {
+            s_Client.Close();
         }
 
         public void Send(string msg)
