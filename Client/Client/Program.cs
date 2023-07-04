@@ -18,7 +18,8 @@ namespace Client
         public enum ImajeS8Command : byte
         {
             InitializationENQ = 0x01,
-            SendCompleteMessage = 0X02
+            SendCompleteMessage = 0X02,
+            ResetFaults = 0x03
         }
         static void Main(string[] args)
         {
@@ -44,11 +45,44 @@ namespace Client
         {
             switch (command)
             {
+                case ImajeS8Command.InitializationENQ:
+                    return InitializationENQ();
+                case ImajeS8Command.ResetFaults:
+                    return ResetFaults();
                 case ImajeS8Command.SendCompleteMessage:
                     return SendCompleteMessage(printMessage);
 
             }
             return null;
+        }
+
+        static byte[] ResetFaults()
+        {
+            byte[] telegram = new byte[5000]; //telegram
+            int a = 0;
+
+            //TODO Completar telegram[a++]
+
+            byte[] finalTelegram = new byte[a];
+            for (int i = 0; i < a; i++)
+            {
+                finalTelegram[i] = telegram[i];
+            }
+            return finalTelegram;
+        }
+
+        static byte[] InitializationENQ() {
+            byte[] telegram = new byte[5000]; //telegram
+            int a = 0;
+
+            //TODO Completar telegram[a++]
+
+            byte[] finalTelegram = new byte[a];
+            for (int i = 0; i < a; i++)
+            {
+                finalTelegram[i] = telegram[i];
+            }
+            return finalTelegram;
         }
 
         //static byte[] SendCompleteMessage(byte[] printMessage)
