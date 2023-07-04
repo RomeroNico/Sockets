@@ -49,128 +49,426 @@ namespace Client
             return null;
         }
 
+        //static byte[] SendCompleteMessage(byte[] printMessage)
+        //{
+        //    byte[] telegram = new byte[5000]; //telegram
+        //    int a = 0;
+        //    int msgLen = 0;
+        //    int value = 0;
+
+        //    // identifier ( 1 byte )
+        //    telegram[a++] = (byte)0x57;
+
+        //    // lenght is at the end
+
+        //    // head (1 or 2 )
+        //    telegram[a++] = (byte)_config.ImajeHead;
+
+        //    // structure indicator (2 bytes)
+        //    value = 0;
+
+        //    value = value | 128; // General parameters presence (bit 7)
+        //    value = value | 64; // messageText presence (bit 6)
+        //    telegram[a++] = (byte)value;
+        //    telegram[a++] = (byte)0;
+
+        //    // General parameters ( 14 bytes )
+        //    /// byte 1. On off parameters
+        //    value = 0;
+        //    if (_config.MessageDirection == ImajeS8DriverConfiguration.cMessageDirectionReverse)
+        //    {
+        //        value = value | 128;
+        //    }
+        //    if (_config.HorizontalDirection == ImajeS8DriverConfiguration.cHorizontalDirectionReverse)
+        //    {
+        //        value = value | 64;
+        //    }
+        //    if (_config.VerticalDirection == ImajeS8DriverConfiguration.cVerticalDirectionReverse)
+        //    {
+        //        value = value | 32;
+        //    }
+        //    if (_config.TachoMode == ImajeS8DriverConfiguration.cTachoModeYes)
+        //    {
+        //        value = value | 16;
+        //    }
+        //    if (_config.ManualTrigger == ImajeS8DriverConfiguration.cManualTriggerYes)
+        //    {
+        //        value = value | 8;
+        //    }
+        //    if (_config.TriggerMode == ImajeS8DriverConfiguration.cTriggerModeRepetitive)
+        //    {
+        //        value = value | 4;
+        //    }
+        //    if (_config.MarginUnit == ImajeS8DriverConfiguration.cMarginUnitFrameht)
+        //    {
+        //        value = value | 2;
+        //    }
+        //    if (_config.DINMode == ImajeS8DriverConfiguration.cDINModeYes)
+        //    {
+        //        value = value | 1;
+        //    }
+        //    telegram[a++] = (byte)value;
+
+        //    /// byte 2. Multi Top value
+        //    telegram[a++] = (byte)_config.MultiTopValue;
+
+        //    /// byte 3. Object top filter
+        //    telegram[a++] = (byte)_config.ObjectTopFilter;
+
+        //    /// byte 4. Tacho division
+        //    telegram[a++] = (byte)_config.TachoDivision;
+
+        //    /// byte 5 & 6. Forward margin
+        //    telegram[a++] = (byte)(_config.ForwardMargin >> 8);
+        //    telegram[a++] = (byte)_config.ForwardMargin;
+
+        //    /// byte 7 & 8. Return margin
+        //    telegram[a++] = (byte)(_config.ReturnMargin >> 8);
+        //    telegram[a++] = (byte)_config.ReturnMargin;
+
+        //    /// byte 9 & 10. Interval
+        //    telegram[a++] = (byte)(_config.Interval >> 8);
+        //    telegram[a++] = (byte)_config.Interval;
+
+        //    /// byte 11 & 12. PrintingSpeed
+        //    telegram[a++] = (byte)(_config.PrintingSpeed >> 8);
+        //    telegram[a++] = (byte)_config.PrintingSpeed;
+
+        //    /// byte 13 & 14. Algorithm number
+        //    telegram[a++] = (byte)(_config.AlgorithmNumber >> 8);
+        //    telegram[a++] = (byte)_config.AlgorithmNumber;
+
+        //    // First line identifier
+        //    telegram[a++] = (byte)ASCII.LF;
+
+        //    // position of first block
+        //    telegram[a++] = (byte)128;
+        //    telegram[a++] = (byte)1;
+
+        //    // character generator 56
+        //    telegram[a++] = (byte)56;
+
+        //    // expansion 1
+        //    telegram[a++] = (byte)1;
+
+        //    // text delimiter
+        //    telegram[a++] = (byte)16;
+
+        //    for (int i = 0; i < printMessage.Length; i++)
+        //        telegram[a++] = printMessage[i];
+
+        //    // text delimiter
+        //    telegram[a++] = (byte)16;
+
+        //    // End of message delimiter
+        //    telegram[a++] = (byte)13;
+
+        //    // CheckSum
+        //    telegram[a++] = (byte)CalcChecksum(telegram);
+
+
+        //    // data block length ( 2 bytes ) len - ID - self - checksum
+        //    msgLen = a - 4;
+        //    telegram[1] = (byte)(msgLen >> 8);
+        //    telegram[2] = (byte)(msgLen);
+        //    return telegram;
+        //}
+
+
         static byte[] SendCompleteMessage(byte[] printMessage)
         {
             byte[] telegram = new byte[5000]; //telegram
             int a = 0;
-            int msgLen = 0;
-            int value = 0;
 
-            // identifier ( 1 byte )
+            //Example msg
+
+            //Identifier
             telegram[a++] = (byte)0x57;
 
-            // lenght is at the end
+            //Length
+            telegram[a++] = (byte)0x00;
+            telegram[a++] = (byte)0x63;
 
-            // head (1 or 2 )
-            telegram[a++] = (byte)_config.ImajeHead;
+            //Head 1
+            telegram[a++] = (byte)0x01;
 
-            // structure indicator (2 bytes)
-            value = 0;
+            //Data.StructureIndicator
+            telegram[a++] = (byte)0xC0;
+            telegram[a++] = (byte)0x00;
 
-            value = value | 128; // General parameters presence (bit 7)
-            value = value | 64; // messageText presence (bit 6)
-            telegram[a++] = (byte)value;
-            telegram[a++] = (byte)0;
+            //Data.GeneralParameters
+            telegram[a++] = (byte)0x10;
 
-            // General parameters ( 14 bytes )
-            /// byte 1. On off parameters
-            value = 0;
-            if (_config.MessageDirection == ImajeS8DriverConfiguration.cMessageDirectionReverse)
-            {
-                value = value | 128;
-            }
-            if (_config.HorizontalDirection == ImajeS8DriverConfiguration.cHorizontalDirectionReverse)
-            {
-                value = value | 64;
-            }
-            if (_config.VerticalDirection == ImajeS8DriverConfiguration.cVerticalDirectionReverse)
-            {
-                value = value | 32;
-            }
-            if (_config.TachoMode == ImajeS8DriverConfiguration.cTachoModeYes)
-            {
-                value = value | 16;
-            }
-            if (_config.ManualTrigger == ImajeS8DriverConfiguration.cManualTriggerYes)
-            {
-                value = value | 8;
-            }
-            if (_config.TriggerMode == ImajeS8DriverConfiguration.cTriggerModeRepetitive)
-            {
-                value = value | 4;
-            }
-            if (_config.MarginUnit == ImajeS8DriverConfiguration.cMarginUnitFrameht)
-            {
-                value = value | 2;
-            }
-            if (_config.DINMode == ImajeS8DriverConfiguration.cDINModeYes)
-            {
-                value = value | 1;
-            }
-            telegram[a++] = (byte)value;
+            //Data.MultitopTrigger
+            telegram[a++] = (byte)0x00;
 
-            /// byte 2. Multi Top value
-            telegram[a++] = (byte)_config.MultiTopValue;
+            //Data.ObjectTopFilter
+            telegram[a++] = (byte)0x01;
 
-            /// byte 3. Object top filter
-            telegram[a++] = (byte)_config.ObjectTopFilter;
+            //Data.TachoDivision
+            telegram[a++] = (byte)0x05;
 
-            /// byte 4. Tacho division
-            telegram[a++] = (byte)_config.TachoDivision;
+            //Data.ForwardMargin
+            telegram[a++] = (byte)0x00;
+            telegram[a++] = (byte)0x10;
 
-            /// byte 5 & 6. Forward margin
-            telegram[a++] = (byte)(_config.ForwardMargin >> 8);
-            telegram[a++] = (byte)_config.ForwardMargin;
+            //Data.ReturnMargin
+            telegram[a++] = (byte)0x00;
+            telegram[a++] = (byte)0x03;
 
-            /// byte 7 & 8. Return margin
-            telegram[a++] = (byte)(_config.ReturnMargin >> 8);
-            telegram[a++] = (byte)_config.ReturnMargin;
+            //Data.Interval
+            telegram[a++] = (byte)0x00;
+            telegram[a++] = (byte)0x02;
 
-            /// byte 9 & 10. Interval
-            telegram[a++] = (byte)(_config.Interval >> 8);
-            telegram[a++] = (byte)_config.Interval;
+            //Data.PrintingSpeed
+            telegram[a++] = (byte)0x01;
+            telegram[a++] = (byte)0x00;
 
-            /// byte 11 & 12. PrintingSpeed
-            telegram[a++] = (byte)(_config.PrintingSpeed >> 8);
-            telegram[a++] = (byte)_config.PrintingSpeed;
+            //Data.Reserved
+            telegram[a++] = (byte)0x00;
+            telegram[a++] = (byte)0x00;
 
-            /// byte 13 & 14. Algorithm number
-            telegram[a++] = (byte)(_config.AlgorithmNumber >> 8);
-            telegram[a++] = (byte)_config.AlgorithmNumber;
+            //Text.FirstLineIdentifier
+            telegram[a++] = (byte)0x0A;
 
-            // First line identifier
-            telegram[a++] = (byte)ASCII.LF;
+            //Text.PositionOfFirstBlock
+            telegram[a++] = (byte)0x80;
+            telegram[a++] = (byte)0x01;
 
-            // position of first block
-            telegram[a++] = (byte)128;
-            telegram[a++] = (byte)1;
+            //Text.CharacterGenerator056
+            telegram[a++] = (byte)0x38;
 
-            // character generator 56
-            telegram[a++] = (byte)56;
+            //Text.Expresion1
+            telegram[a++] = (byte)0x01;
 
-            // expansion 1
-            telegram[a++] = (byte)1;
+            //Text.TextDelimiter
+            telegram[a++] = (byte)0x10;
 
-            // text delimiter
-            telegram[a++] = (byte)16;
+            //Text.P
+            telegram[a++] = (byte)0x50;
+
+            //Text.R
+            telegram[a++] = (byte)0x52;
+
+            //Text.O
+            telegram[a++] = (byte)0x4F;
+
+            //Text.D
+            telegram[a++] = (byte)0x44;
+
+            //Text.U
+            telegram[a++] = (byte)0x55;
+
+            //Text.I
+            telegram[a++] = (byte)0x49;
+
+            //Text.T
+            telegram[a++] = (byte)0x54;
+
+            //Text.Space
+            telegram[a++] = (byte)0x20;
+
+            //Text.L
+            telegram[a++] = (byte)0x4C;
+
+            //Text.E
+            telegram[a++] = (byte)0x45;
+
+            //Text.Space
+            telegram[a++] = (byte)0x20;
+
+            //Text.AutodatingDelimiter
+            telegram[a++] = (byte)0x1A;
+
+            //Text.DayOfMonth(30)
+            telegram[a++] = (byte)0x49;
+            telegram[a++] = (byte)0x4A;
+
+            //Text.Separator
+            telegram[a++] = (byte)0x6E;
+
+            //Text.Month(09)
+            telegram[a++] = (byte)0x50;
+            telegram[a++] = (byte)0x51;
+
+            //Text.Separator
+            telegram[a++] = (byte)0x6E;
+
+            //Text.Year(00)
+            telegram[a++] = (byte)0x55;
+            telegram[a++] = (byte)0x56;
+
+            //Text.AutodatingDelimiter
+            telegram[a++] = (byte)0x1A;
+
+            //Text.Expresion1
+            telegram[a++] = (byte)0x01;
+
+            //Text.CharacterGenerator056
+            telegram[a++] = (byte)0x38;
+
+            //Text.PositionOfFirstBlock
+            telegram[a++] = (byte)0x80;
+            telegram[a++] = (byte)0x01;
+
+            //Text.PositionOfSecondBlock
+            telegram[a++] = (byte)0x80;
+            telegram[a++] = (byte)0x01;
+
+            //Text.CharacterGenerator052
+            telegram[a++] = (byte)0x34;
+
+            //Text.Expresion2
+            telegram[a++] = (byte)0x02;
+
+            //Text.TextDelimiter
+            telegram[a++] = (byte)0x10;
+
+            //Text.Space
+            telegram[a++] = (byte)0x20;
+
+            //Text.P
+            telegram[a++] = (byte)0x50;
+
+            //Text.0
+            telegram[a++] = (byte)0x4F;
+
+            //Text.I
+            telegram[a++] = (byte)0x49;
+
+            //Text.D
+            telegram[a++] = (byte)0x44;
+
+            //Text.S
+            telegram[a++] = (byte)0x53;
+
+            //Text.Space
+            telegram[a++] = (byte)0x20;
+
+            //Text.2
+            telegram[a++] = (byte)0x32;
+
+            //Text.Space
+            telegram[a++] = (byte)0x20;
+
+            //Text.K
+            telegram[a++] = (byte)0x4B;
+
+            //Text.G
+            telegram[a++] = (byte)0x47;
+
+            //Text.TextDelimiter
+            telegram[a++] = (byte)0x10;
+
+            //Text.Expresion2
+            telegram[a++] = (byte)0x02;
+
+            //Text.CharacterGenerator052
+            telegram[a++] = (byte)0x34;
+
+            //Text.PositionOfSecondBlock
+            telegram[a++] = (byte)0x80;
+            telegram[a++] = (byte)0x01;
+
+            //Text.SecondLineIdentifier
+            telegram[a++] = (byte)0x0A;
+
+            //Text.PositionFirstBlock
+            telegram[a++] = (byte)0x80;
+            telegram[a++] = (byte)0x0A;
+
+            //Text.CharacterGenerator052
+            telegram[a++] = (byte)0x34;
+
+            //Text.Expresion1
+            telegram[a++] = (byte)0x01;
+
+            //Text.TextDelimiter
+            telegram[a++] = (byte)0x10;
+
+            //Text.TabulationDelimiter
+            telegram[a++] = (byte)0x1E;
+
+            //Text.NumberOfFreames(240)
+            telegram[a++] = (byte)0xF0;
+
+            //Text.TabulationDelimiter
+            telegram[a++] = (byte)0x1E;
+
+            //Text.M
+            telegram[a++] = (byte)0x4D;
+
+            //Text.A
+            telegram[a++] = (byte)0x41;
+
+            //Text.D
+            telegram[a++] = (byte)0x44;
+
+            //Text.E
+            telegram[a++] = (byte)0x45;
+
+            //Text.Space
+            telegram[a++] = (byte)0x20;
+
+            //Text.I
+            telegram[a++] = (byte)0x49;
+
+            //Text.N
+            telegram[a++] = (byte)0x4E;
+
+            //Text.Space
+            telegram[a++] = (byte)0x20;
+
+            //Text.F
+            telegram[a++] = (byte)0x46;
+
+            //Text.R
+            telegram[a++] = (byte)0x52;
+
+            //Text.A
+            telegram[a++] = (byte)0x41;
+
+            //Text.N
+            telegram[a++] = (byte)0x4E;
+
+            //Text.C
+            telegram[a++] = (byte)0x43;
+
+            //Text.E
+            telegram[a++] = (byte)0x45;
+
+            //Text.TextDelimiter
+            telegram[a++] = (byte)0x10;
+
+            //Text.Expresion1
+            telegram[a++] = (byte)0x01;
+
+            //Text.CharacterGenerator052
+            telegram[a++] = (byte)0x34;
+
+            //Text.PositionOfSecondBlock
+            telegram[a++] = (byte)0x80;
+            telegram[a++] = (byte)0x0A;
+
+            //Text.EndOfMessageDelimiter
+            telegram[a++] = (byte)0x0D;
+
+            //Text.Checksum
+            telegram[a++] = (byte)0x0D;
+
+
+
+            //End Example msg
+
+
+
+            byte[] finalTelegram = new byte[a]
 
             for (int i = 0; i < printMessage.Length; i++)
                 telegram[a++] = printMessage[i];
 
-            // text delimiter
-            telegram[a++] = (byte)16;
+            //Console.WriteLine("byte {0}", a);
 
-            // End of message delimiter
-            telegram[a++] = (byte)13;
-
-            // CheckSum
-            telegram[a++] = (byte)CalcChecksum(telegram);
-
-
-            // data block length ( 2 bytes ) len - ID - self - checksum
-            msgLen = a - 4;
-            telegram[1] = (byte)(msgLen >> 8);
-            telegram[2] = (byte)(msgLen);
             return telegram;
         }
 
