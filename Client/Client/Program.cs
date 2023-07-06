@@ -25,19 +25,31 @@ namespace Client
         {
             Client c = new Client(args[0], Int32.Parse(args[1]));
             string msg;
+            string ans;
             byte[] printMessage;
             byte[] telegram;
 
             c.Start();
-            Console.Write("Send telegram ");
+            Console.WriteLine("Send telegram ");
             msg = args[2];
             printMessage = Encoding.ASCII.GetBytes(msg);
+            telegram = BuildTelegram(ImajeS8Command.InitializationENQ, printMessage);
+            c.Send(telegram);
+            Console.WriteLine("Send telegram finish ");
+            Console.WriteLine("Wait for an answer");
+            ans = c.WaitForAnswer(7000); // wait 7 seconds
+            Console.WriteLine(Encoding.ASCII.GetBytes(ans)[0]);
+            Console.WriteLine("Wait for an answer finished");
+
+            Console.WriteLine("Send telegram ");
             telegram = BuildTelegram(ImajeS8Command.SendCompleteMessage, printMessage);
             c.Send(telegram);
-            Console.Write("Send telegram finish ");
-            Console.Write("Wait for an answer");
-            c.WaitForAnswer(7000); // wait 7 seconds
-            Console.Write("Wait for an answer finished");
+            Console.WriteLine("Send telegram finish ");
+            Console.WriteLine("Wait for an answer");
+            ans = c.WaitForAnswer(7000); // wait 7 seconds
+            Console.WriteLine(Encoding.ASCII.GetBytes(ans)[0]);
+            Console.WriteLine("Wait for an answer finished");
+
             c.Close();
         }
 
@@ -121,40 +133,29 @@ namespace Client
 
 
 
-            // lenght is at the end
-
+            // lenght is calculated at the end
+            telegram[a++] = 0;
+            telegram[a++] = 0;
 
 
             // head (1 or 2 )
-
             telegram[a++] = (byte)_config.ImajeHead;
 
 
 
             // structure indicator (2 bytes)
-
             value = 0;
-
-
-
             value = value | 128; // General parameters presence (bit 7)
-
             value = value | 64; // messageText presence (bit 6)
-
             telegram[a++] = (byte)value;
-
-            telegram[a++] = (byte)0;
+            telegram[a++] = (byte)0x0;
 
 
 
             // General parameters ( 14 bytes )
-
             /// byte 1. On off parameters
-
             value = 0;
-
             if (_config.MessageDirection == ImajeS8DriverConfiguration.cMessageDirectionReverse)
-
             {
 
                 value = value | 128;
@@ -216,13 +217,11 @@ namespace Client
                 value = value | 1;
 
             }
-
             telegram[a++] = (byte)value;
 
 
 
             /// byte 2. Multi Top value
-
             telegram[a++] = (byte)_config.MultiTopValue;
 
 
@@ -264,106 +263,53 @@ namespace Client
 
 
             /// byte 11 & 12. PrintingSpeed
-
             telegram[a++] = (byte)(_config.PrintingSpeed >> 8);
-
             telegram[a++] = (byte)_config.PrintingSpeed;
 
-
-
             /// byte 13 & 14. Algorithm number
-
             telegram[a++] = (byte)(_config.AlgorithmNumber >> 8);
-
             telegram[a++] = (byte)_config.AlgorithmNumber;
 
 
-
             // First line identifier
+            telegram[a++] = (byte)0xA;
 
-            telegram[a++] = (byte)ASCII.LF;
-
-
+            // ZONA DE BLOQUES
 
             // position of first block
-
-            telegram[a++] = (byte)128;
-
-            telegram[a++] = (byte)1;
-
-
-
+            telegram[a++] = (byte)0x80;
+            telegram[a++] = (byte)0x01;
             // symbol generator 56
-
-            telegram[a++] = (byte)56;
-
-
-
+            telegram[a++] = (byte)0x64; //64
             // bolderization 1
-
-            telegram[a++] = (byte)1;
-
-
-
+            telegram[a++] = (byte)0x1;
             // text delimiter
-
-            telegram[a++] = (byte)16;
-
-
+            telegram[a++] = (byte)0x10;
 
             for (int i = 0; i < printMessage.Length; i++)
-
                 telegram[a++] = printMessage[i];
 
-
-
             // text delimiter
-
-            telegram[a++] = (byte)16;
-
-
-
+            telegram[a++] = (byte)0x10;
             // bolderization 1
-
-            telegram[a++] = (byte)1;
-
-
-
+            telegram[a++] = (byte)0x1;
             // symbol generator 56
-
-            telegram[a++] = (byte)56;
-
-
-
+            telegram[a++] = (byte)0x64; //64
             // position of first block
-
-            telegram[a++] = (byte)128;
-
-            telegram[a++] = (byte)1;
-
+            telegram[a++] = (byte)0x80;
+            telegram[a++] = (byte)0x1;
 
 
             // End of message delimiter
-
-            telegram[a++] = (byte)13;
-
-
-
-            // CheckSum
-
-            telegram[a++] = (byte)CalcChecksum(telegram);
-
-
-
-
+            telegram[a++] = (byte)0xD;
 
             // data block length ( 2 bytes ) len - ID - self - checksum
-
-            msgLen = a - 4;
-
+            msgLen = a - 3;
             telegram[1] = (byte)(msgLen >> 8);
-
             telegram[2] = (byte)(msgLen);
+
+            // CheckSum
+            telegram[a++] = (byte)CalcChecksum(telegram);
 
 
             byte[] finalTelegram = new byte[a];

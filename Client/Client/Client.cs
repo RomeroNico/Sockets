@@ -43,7 +43,7 @@ namespace Client
             Console.WriteLine("sent {0} bytes", bytesSent);
             for (int i = 0; i < bytesSent; i++)
             {
-                Console.WriteLine("{0} - {1} - {2}", i, msg[i], (char)msg[i]);
+                Console.WriteLine("{0,3} - {1,3} - {2,3}", i, msg[i], msg[i].ToString("X2"));
             }
         }
 

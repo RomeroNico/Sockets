@@ -63,7 +63,7 @@ namespace Client
 
         public int TachoMode
         {
-            get { return cTachoModeYes; }
+            get { return cTachoModeNo; }
             set { }
         }
 
@@ -120,7 +120,7 @@ namespace Client
 
         public int Interval
         {
-            get { return 2; } // 0001 to 9999 mm
+            get { return 3; } // 0001 to 9999 mm
             set { }
         }
         public int PrintingSpeed

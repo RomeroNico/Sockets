@@ -1,0 +1,11 @@
+D:\repos\Sockets\ImajeTester\ImajeTester\obj\Debug\ImajeTester.csproj.AssemblyReference.cache
+D:\repos\Sockets\ImajeTester\ImajeTester\obj\Debug\ImajeTester.csproj.SuggestedBindingRedirects.cache
+D:\repos\Sockets\ImajeTester\ImajeTester\obj\Debug\ImajeTester.Form1.resources
+D:\repos\Sockets\ImajeTester\ImajeTester\obj\Debug\ImajeTester.Properties.Resources.resources
+D:\repos\Sockets\ImajeTester\ImajeTester\obj\Debug\ImajeTester.csproj.GenerateResource.cache
+D:\repos\Sockets\ImajeTester\ImajeTester\obj\Debug\ImajeTester.csproj.CoreCompileInputs.cache
+D:\repos\Sockets\ImajeTester\ImajeTester\bin\Debug\ImajeTester.exe.config
+D:\repos\Sockets\ImajeTester\ImajeTester\bin\Debug\ImajeTester.exe
+D:\repos\Sockets\ImajeTester\ImajeTester\bin\Debug\ImajeTester.pdb
+D:\repos\Sockets\ImajeTester\ImajeTester\obj\Debug\ImajeTester.exe
+D:\repos\Sockets\ImajeTester\ImajeTester\obj\Debug\ImajeTester.pdb
